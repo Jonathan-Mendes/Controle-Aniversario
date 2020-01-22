@@ -1,0 +1,16 @@
+.mesa{
+    width: 100px;
+    height: 100px;
+    background-color: #ffc107;
+}
+
+.numMesa{
+    font-weight: bold;
+    font-size: 50px;
+    color: black;
+}
+
+.lista{
+    position: absolute;
+    left: 0px;
+}
