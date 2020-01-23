@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
 import firebase from '../../BaseDados/firebase';
 import {
-    Button, Label, FormGroup, Form, Col, Row, Input, Container, Table,
-    Modal, ModalHeader, ModalBody, ModalFooter, Spinner
+    Button, Label, Col, Row, Input, Container, Table,
+    Modal, ModalHeader, ModalBody, ModalFooter, Spinner,
+    CustomInput, FormGroup, Form
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import './convidado.css';
+import './addConvidado.css';
 import { FaFlagCheckered, FaRegTrashAlt, FaCheck, FaReply, FaSearch } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 
-class convidados extends Component {
+class addConvidado extends Component {
 
     loading = false;
 
     constructor(props) {
         super(props);
         this.state = {
+            lembrancinha: false,
             pesquisar: '',
             convidados: [],
             convidadosPesquisados: [],
@@ -27,9 +29,10 @@ class convidados extends Component {
         this.salvar = this.salvar.bind(this);
         this.cadastrar = this.cadastrar.bind(this);
         this.toggle = this.toggle.bind(this);
-        // this.excluir = this.excluir.bind(this);
-        // this.delete = this.delete.bind(this);
+        this.excluir = this.excluir.bind(this);
+        this.delete = this.delete.bind(this);
         this.pesquisar = this.pesquisar.bind(this);
+        this.cancelar = this.cancelar.bind(this);
     }
 
     componentDidMount() {
@@ -52,12 +55,26 @@ class convidados extends Component {
         e.preventDefault();
         this.cadastrar();
         this.toggle();
+        this.setState({ lembrancinha: false })
     }
 
     cadastrar = async () => {
         try {
-            const { nome } = this.state;
-            await firebase.cadastrarConvidados(nome);
+            const { nome, lembrancinha } = this.state;
+            await firebase.cadastrarConvidados(nome, lembrancinha);
+        } catch (error) {
+            alert("error.message");
+        }
+    }
+
+    delete(e) {
+        e.preventDefault();
+        this.excluir();
+    }
+
+    excluir = async (key) => {
+        try {
+            await firebase.deletarConvidado(key);
         } catch (error) {
             alert("error.message");
         }
@@ -67,6 +84,11 @@ class convidados extends Component {
         this.setState(prevState => ({
             modal: !prevState.modal
         }));
+    }
+
+    cancelar(){
+        this.setState({ lembrancinha: false })
+        this.toggle();
     }
 
     pesquisar() {
@@ -91,7 +113,7 @@ class convidados extends Component {
     render() {
         return this.loading ? (
             <Container className="container">
-                <Link to={{ pathname: "/" }}>
+                <Link to={{ pathname: "/convidados" }}>
                     <p className="text-warning font-weight-bolder" >
                         <FaReply className="iconBack" />
                         <Button className="font-weight-bolder noneDecoration text-warning"
@@ -101,15 +123,15 @@ class convidados extends Component {
 
                 <h1 className="text-warning text-center my-5 title">
                     <FaFlagCheckered className="iconFlag mr-3" />
-                    Convidados
+                    Inserir Convidados
                     <FaFlagCheckered className="iconFlag ml-3" />
                 </h1>
 
 
                 <Row>
                     <Col md={12} className="mb-2">
-                            <Input id='pesquisar' type="text" placeholder="Pesquisar por Nome" value={this.state.pesquisar}
-                                onChange={(e) => this.setState({ pesquisar: e.target.value })} />
+                        <Input id='pesquisar' type="text" placeholder="Pesquisar por Nome" value={this.state.pesquisar}
+                            onChange={(e) => this.setState({ pesquisar: e.target.value })} />
                     </Col>
                     <Col md={12}>
                         <Button color="warning" className="w-100 mb-3" onClick={() => this.pesquisar()}><FaSearch className="mx-2" />Pesquisar</Button>
@@ -121,7 +143,7 @@ class convidados extends Component {
                         <tr>
                             <th className="text-warning text-center">#</th>
                             <th className="text-warning text-center">Nome</th>
-                            <th className="text-warning text-center">Excluir / Confirmar</th>
+                            <th className="text-warning text-center">Excluir</th>
                             {/* <th className="text-warning text-center">Confirmar</th> */}
                         </tr>
                     </thead>
@@ -132,18 +154,15 @@ class convidados extends Component {
                                     <th scope="row" className="text-center text-warning">{index + 1}</th>
                                     <td className="text-center text-white">{convidado.nome}</td>
                                     <td className="text-center">
-                                        <Button color="danger mr-1"><FaRegTrashAlt /></Button>
-                                    {/* </td>
-                                    <td className="text-center"> */}
-                                        <Button color="success ml-1"><FaCheck /></Button>
+                                        <Button color="danger" onClick={() => this.excluir(convidado.id)}><FaRegTrashAlt /></Button>
                                     </td>
                                 </tr>
                             )
                         })}
                     </tbody>
                 </Table>
-                
-                <div className="d-flex justify-content-end fixed-bottom">
+
+                <div className="d-flex justify-content-end fixed-bottom ">
                     <Button color="warning" className="rounded-circle float-right d-flex justify-content-center align-items-center fabAdd m-2"
                         onClick={() => this.toggle()}>
                         <IoMdAdd />
@@ -154,20 +173,32 @@ class convidados extends Component {
                     unmountOnClose={this.state.unmountOnClose}>
                     <ModalHeader toggle={this.toggle} className="modalColor textRed">Inserir Convidado</ModalHeader>
                     <ModalBody className="modalColor">
-                        <Label for="nomeConvidado" className="textRed">Nome</Label>
-                        <Input id="nomeConvidado" type="text" placeholder="Nome do Convidado" className="inputNome"
-                            onChange={(e) => this.setState({ nome: e.target.value })} />
+                        <Form>
+                            <FormGroup>
+                                <Label for="nomeConvidado" className="textRed">Nome</Label>
+                                <Input id="nomeConvidado" type="text" placeholder="Nome do Convidado" className="inputNome"
+                                    onChange={(e) => this.setState({ nome: e.target.value })} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label className='textRed'>Lembrancinha</Label>
+                                <div class="switch__container">
+                                    <input id="switch-shadow" class="switch switch--shadow" type="checkbox" 
+                                    onChange={(e) => this.setState({ lembrancinha: !this.state.lembrancinha })}/>
+                                        <label for="switch-shadow"></label>
+                                </div>
+                            </FormGroup>
+                        </Form>
                     </ModalBody>
-                    <ModalFooter className="modalColor">
-                        <Button color="success" onClick={(e) => this.salvar(e)}>Salvar</Button>
-                        <Button color="danger" onClick={this.toggle}>Cancelar</Button>
-                    </ModalFooter>
+                            <ModalFooter className="modalColor">
+                                <Button color="success" onClick={(e) => this.salvar(e)}>Salvar</Button>
+                                <Button color="danger" onClick={() => this.cancelar()}>Cancelar</Button>
+                            </ModalFooter>
                 </Modal>
             </Container>
-        ) : (
+                    ) : (
                 <div id="spinner">
-                    <Spinner style={{ width: '6rem', height: '6rem' }} color="warning" />
-                </div>)
+                        <Spinner style={{ width: '6rem', height: '6rem' }} color="warning" />
+                    </div>)
+        }
     }
-}
-export default convidados;
+    export default addConvidado;

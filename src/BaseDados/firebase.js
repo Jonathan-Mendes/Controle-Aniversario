@@ -19,11 +19,13 @@ class Firebase {
     }
 
     // CADASTRO 
-    async cadastrarConvidados(nome) {
+    async cadastrarConvidados(nome, lembrancinha) {
         let ref = app.database().ref('convidados/');
         let key = ref.push().key
         return ref.child(key).set({
-            nome
+            nome,
+            lembrancinha,
+            confirmado: false
         })
     }
 
@@ -74,9 +76,9 @@ class Firebase {
     //     await app.database().ref('anotacoes/').child(key).child("anotacao").set(anotacao);
     // }
 
-    // async updateSatusOrdem(key, status) {
-    //     await app.database().ref('ordens/').child(key).child("status").set(status);
-    // }
+    async confirmarPresenca(key) {
+        await app.database().ref('convidados/').child(key).child("confirmado").set(true);
+    }
 
     // async updateOrdem(key, motivo, cliente, data, hora) {
     //     await app.database().ref('ordens/').child(key).child("motivo").set(motivo);
@@ -85,10 +87,10 @@ class Firebase {
     //     await app.database().ref('ordens/').child(key).child("hora").set(hora);
     // }
 
-    // // DELETE
-    // async deletarManuntencao(key) {
-    //     await app.database().ref('manutencao/').child(key).remove();
-    // }
+    // DELETE
+    async deletarConvidado(key) {
+        await app.database().ref('convidados/').child(key).remove();
+    }
 
     // async deletarAnotacao(key) {
     //     await app.database().ref('anotacoes/').child(key).remove();
