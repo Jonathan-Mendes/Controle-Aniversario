@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import home from './Components/Home';
 import addConvidado from './Components/AddConvidado';
 import mesas from './Components/Mesas';
+import mesaConvidados from './Components/MesaConvidados';
 import telaConvidados from './Components/TelaConvidados';
 import confirmarConvidados from './Components/ConfirmarConvidados';
 
@@ -18,6 +19,7 @@ class App extends Component {
           <Route exact path="/convidados/adicionar-convidados" component={addConvidado} />
           <Route exact path="/convidados/confirmar-convidados" component={confirmarConvidados} />
           <Route exact path="/mesas" component={mesas} />
+          <Route exact path="/mesas/mesa-convidados/:mesa" component={mesaConvidados} />
         </Switch>
       </BrowserRouter>
     )

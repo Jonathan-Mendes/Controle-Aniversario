@@ -4,34 +4,28 @@ import {
     Modal, ModalHeader, ModalBody, ModalFooter, Spinner
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import './mesas.css';
+import './mesaConvidados.css';
 import { FaFlagCheckered, FaReply } from "react-icons/fa";
 
-class mesas extends Component {
+class mesaConvidados extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            mesas: []
+            mesa: '',
+            loading: false
         };
-        this.navigation = this.navigation.bind(this);
     }
+
 
     componentDidMount() {
-        for (let i = 1; i <= 20; i++) {
-            this.state.mesas.push(i)
-        }
-        this.setState(this.state)
-    }
-
-    navigation(mesa){
-        this.props.history.replace(`/mesas/mesa-convidados/${mesa}`)
+        this.setState({ mesa: this.props.match.params, lading: true })
     }
 
     render() {
         return (
             <Container className="container">
-                <Link to={{ pathname: "/" }}>
+                <Link to={{ pathname: "/mesas" }}>
                     <p className="text-warning font-weight-bolder" >
                         <FaReply className="iconBack" />
                         <Button className="font-weight-bolder noneDecoration text-warning"
@@ -41,25 +35,20 @@ class mesas extends Component {
 
                 <h1 className="text-warning text-center my-5 title">
                     <FaFlagCheckered className="iconFlag mr-3" />
-                    Mesas
+                    Mesa {this.state.mesa}
                     <FaFlagCheckered className="iconFlag ml-3" />
                 </h1>
 
                 <Row>
-                    {this.state.mesas.map((mesa) => {
-                        return (
-                            <Col sm={3} md={3}>
-                                <div className="mesa mx-auto d-flex justify-content-center align-items-center my-2"
-                                onClick={() => this.navigation(mesa)}>
-                                    <span className="numMesa">{mesa}</span>
-                                </div>
-                            </Col>
-                        )
-                    })}
+                    <Col sm={3} md={3}>
+                        <div className="mesa mx-auto d-flex justify-content-center align-items-center my-2">
+                            <span className="numMesa">{this.state.mesa}</span>
+                        </div>
+                    </Col>
                 </Row>
 
             </Container>
         )
     }
 }
-export default mesas;
+export default mesaConvidados;
