@@ -7,7 +7,7 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './addConvidado.css';
-import { FaFlagCheckered, FaRegTrashAlt, FaCheck, FaReply, FaSearch } from "react-icons/fa";
+import { FaFlagCheckered, FaRegTrashAlt, FaReply, FaSearch } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 
 class addConvidado extends Component {

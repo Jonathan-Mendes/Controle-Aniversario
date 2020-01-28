@@ -1,20 +1,39 @@
-.mesa{
-    width: 100px;
-    height: 100px;
-    background-color: #ffc107;
-}
-
-.mesa:hover{
+.addConvidadoMesa:hover{
     cursor: pointer;
 }
 
-.numMesa{
+.inputAddConvidadoMesa{
+    background: none !important;
+    border-color: #800309 !important;
+    border-bottom: 2px solid #ffc107 !important;
+    color: white;
     font-weight: bold;
-    font-size: 50px;
-    color: black;
+    width: 250px;
+    padding: 5px;
+    -webkit-appearance: none;
+    -moz-appearance:    none;
+    appearance:         none;
 }
 
-.lista{
-    position: absolute;
-    left: 0px;
+textarea:focus, input:focus, select:focus {
+border-color: none !important;
+outline: 0;
+-webkit-box-shadow: none !important;
+box-shadow: none !important;
 }
+
+.option{
+    background-color: #ffc107;
+    color: #800309;
+    font-weight: bold;
+}
+
+.option:hover{
+    background-color: #800309 !important;
+    color: #ffc107 !important;
+}
+
+.idConvidadoMesa{
+    font-size: 25px;
+}
+

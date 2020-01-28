@@ -6,6 +6,7 @@ import {
 import { Link } from 'react-router-dom';
 import './mesaConvidados.css';
 import { FaFlagCheckered, FaReply } from "react-icons/fa";
+import { IoIosAddCircle } from "react-icons/io";
 
 class mesaConvidados extends Component {
 
@@ -19,11 +20,11 @@ class mesaConvidados extends Component {
 
 
     componentDidMount() {
-        this.setState({ mesa: this.props.match.params, lading: true })
+        this.setState({ mesa: this.props.match.params.mesa, lading: true })
     }
 
     render() {
-        return (
+        return true ? (
             <Container className="container">
                 <Link to={{ pathname: "/mesas" }}>
                     <p className="text-warning font-weight-bolder" >
@@ -40,15 +41,53 @@ class mesaConvidados extends Component {
                 </h1>
 
                 <Row>
-                    <Col sm={3} md={3}>
-                        <div className="mesa mx-auto d-flex justify-content-center align-items-center my-2">
-                            <span className="numMesa">{this.state.mesa}</span>
-                        </div>
+                    <Col md={12}>
+                        <h2 className="text-warning text-center mb-5">Convidados da Mesa</h2>
+                    </Col>
+
+                    <Col md={12} className="text-center my-2 d-flex align-items-center justify-content-center">
+                        <span className="text-white font-weight-bold mr-2 idConvidadoMesa">1</span>
+                        <IoIosAddCircle className="text-warning iconFlag addConvidadoMesa" />
+                        <select className="inputAddConvidadoMesa" id="convidado1">
+                            <option className="option" value="volvo">Volvo</option>
+                        </select>
+                    </Col>
+
+                    <Col md={12} className="text-center my-2 d-flex align-items-center justify-content-center">
+                        <span className="text-white font-weight-bold mr-2 idConvidadoMesa">2</span>
+                        <IoIosAddCircle className="text-warning iconFlag addConvidadoMesa" />
+                        <select className="inputAddConvidadoMesa">
+                            <option className="option" value="volvo">Volvo</option>
+                        </select>
+                    </Col>
+
+                    <Col md={12} className="text-center my-2 d-flex align-items-center justify-content-center">
+                        <span className="text-white font-weight-bold mr-2 idConvidadoMesa">4</span>
+                        <IoIosAddCircle className="text-warning iconFlag addConvidadoMesa" />
+                        <select className="inputAddConvidadoMesa">
+                            <option className="option" value="volvo">Volvo</option>
+                        </select>
+                    </Col>
+
+                    <Col md={12} className="text-center my-2 d-flex align-items-center justify-content-center">
+                        <span className="text-white font-weight-bold mr-2 idConvidadoMesa">3</span>
+                        <IoIosAddCircle className="text-warning iconFlag addConvidadoMesa" />
+                        <select className="inputAddConvidadoMesa">
+                            <option className="option" value="volvo">Volvo</option>
+                        </select>
+                    </Col>
+
+                    <Col md={12} className="justify-content-center mt-5">
+                        <Button color="success" className="w-100">Salvar</Button>
                     </Col>
                 </Row>
 
             </Container>
-        )
+        ) : (
+                <div id="spinner">
+                    <Spinner style={{ width: '6rem', height: '6rem' }} color="warning" />
+                </div>
+            )
     }
 }
 export default mesaConvidados;
